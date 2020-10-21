@@ -20,8 +20,10 @@
     </div>
     <div v-else>
       <p>
+        <button v-on:click="firstComic">First</button>
         <button v-on:click="previousComic">Previous</button>
         <button v-on:click="nextComic">Next</button>
+        <button v-on:click="lastComic">Last</button>
         <button v-on:click="randomComic">Random</button>
       </p>
       <h2>{{current.safe_title}}</h2>
@@ -36,7 +38,7 @@
       <div v-for="comment in comments[number]">
         <hr>
         <p>{{comment.text}}</p>
-        <p><i>-- {{comment.author}}</i></p>
+        <p><i>-- {{comment.author}} (posted on {{comment.date}})</i></p>
       </div>
     </div>
   </div>

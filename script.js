@@ -39,7 +39,8 @@ let app = new Vue({
     watch: {
         number(value, oldvalue) {
             if (oldvalue === '') {
-                max = value;
+                
+                this.max = value;
             } else {
                 this.xkcd();
             }
@@ -68,6 +69,9 @@ let app = new Vue({
             }
 
         },
+        firstComic() {
+            this.number = 1;
+        },
         previousComic() {
             this.number = this.current.num - 1;
             if (this.number < 1)
@@ -76,7 +80,10 @@ let app = new Vue({
         nextComic() {
             this.number = this.current.num + 1;
             if (this.number > this.max)
-                this.number = this.max
+                this.number = this.max;
+        },
+        lastComic(){
+            this.number = this.max;
         },
         getRandom(min, max) {
             min = Math.ceil(min);
@@ -91,7 +98,8 @@ let app = new Vue({
               Vue.set(app.comments, this.number, new Array);
             this.comments[this.number].push({
               author: this.addedName,
-              text: this.addedComment
+              text: this.addedComment,
+              date: (new Date()).toUTCString()
             });
             this.addedName = '';
             this.addedComment = '';
