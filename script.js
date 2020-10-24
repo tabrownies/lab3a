@@ -112,7 +112,7 @@ let app = new Vue({
             this.comments[this.number].push({
                 author: this.addedName,
                 text: this.addedComment,
-                date: (new Date()).toUTCString()
+                date: dayjs().format('D MMMM YYYY'),
             });
             this.addedName = '';
             this.addedComment = '';
