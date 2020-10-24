@@ -1,3 +1,5 @@
+Vue.component('star-rating', VueStarRating.default);
+console.log(Vue.component);
 let app = new Vue({
     el: '#app',
     data: {
@@ -12,6 +14,7 @@ let app = new Vue({
         addedName: '',
         addedComment: '',
         comments: {},
+        ratings: {},
     },
     created() {
         this.xkcd();
@@ -34,12 +37,22 @@ let app = new Vue({
             month[10] = "November";
             month[11] = "December";
             return month[this.current.month - 1];
+        },
+        averageRating(){
+            let average = 0;
+            try{
+                average = this.ratings[this.number].sum/this.ratings[this.number].total;
+            }
+            catch(error){
+                console.error(error);
+            }
+            return average;
         }
     },
     watch: {
         number(value, oldvalue) {
             if (oldvalue === '') {
-                
+
                 this.max = value;
             } else {
                 this.xkcd();
@@ -82,7 +95,7 @@ let app = new Vue({
             if (this.number > this.max)
                 this.number = this.max;
         },
-        lastComic(){
+        lastComic() {
             this.number = this.max;
         },
         getRandom(min, max) {
@@ -95,14 +108,25 @@ let app = new Vue({
         },
         addComment() {
             if (!(this.number in this.comments))
-              Vue.set(app.comments, this.number, new Array);
+                Vue.set(app.comments, this.number, new Array);
             this.comments[this.number].push({
-              author: this.addedName,
-              text: this.addedComment,
-              date: (new Date()).toUTCString()
+                author: this.addedName,
+                text: this.addedComment,
+                date: (new Date()).toUTCString()
             });
             this.addedName = '';
             this.addedComment = '';
-          },
+        },
+        setRating(rating) {
+            // Handle the rating
+            console.log('eeee', rating);
+            if (!(this.number in this.ratings))
+                Vue.set(this.ratings, this.number, {
+                    sum: 0,
+                    total: 0
+                });
+            this.ratings[this.number].sum += rating;
+            this.ratings[this.number].total += 1;
+        }
     }
 });
